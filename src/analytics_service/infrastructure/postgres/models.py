@@ -4,7 +4,7 @@ from datetime import datetime
 from uuid import UUID
 
 from sqlalchemy import DateTime, String
-from sqlalchemy.dialects.postgresql import UUID as PG_UUID
+from sqlalchemy.dialects.postgresql import UUID as PG_UUID, ARRAY
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
@@ -28,7 +28,7 @@ class TaskAnalyticsModel(Base):
     description: Mapped[str | None] = mapped_column(String, nullable=True)
     status: Mapped[str] = mapped_column(String, index=True)
     user_id: Mapped[str | None] = mapped_column(String, nullable=True)
-    assignee: Mapped[str | None] = mapped_column(String, nullable=True)
+    assignees: Mapped[list[str] | None] = mapped_column(ARRAY(String), nullable=True)
     priority: Mapped[str | None] = mapped_column(String, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime)
     updated_at: Mapped[datetime] = mapped_column(DateTime)

@@ -33,7 +33,7 @@ def upgrade() -> None:
         sa.Column('description', sa.String(), nullable=True),
         sa.Column('status', sa.String(), nullable=False),
         sa.Column('user_id', sa.String(), nullable=True),
-        sa.Column('assignee', sa.String(), nullable=True),
+        sa.Column('assignees', sa.ARRAY(sa.String()), nullable=True), 
         sa.Column('priority', sa.String(), nullable=True),
         sa.Column('created_at', sa.DateTime(), nullable=False),
         sa.Column('updated_at', sa.DateTime(), nullable=False),
