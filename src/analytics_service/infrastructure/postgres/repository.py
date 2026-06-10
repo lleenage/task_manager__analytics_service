@@ -2,7 +2,6 @@
 
 from datetime import datetime
 
-from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from analytics_service.core.logger import get_logger
@@ -13,12 +12,9 @@ logger = get_logger(__name__)
 
 
 class AnalyticsRepository:
-    """Repository for analytics data."""
-
     async def save_task_event(
         self, session: AsyncSession, event: TaskEventSchema
     ) -> None:
-        """Save task event to database."""
         payload = event.payload
         
         # Parse datetime fields
@@ -30,6 +26,16 @@ class AnalyticsRepository:
         if isinstance(updated_at, str):
             updated_at = datetime.fromisoformat(updated_at)
         
+        raw_assignees = payload.get("metadata", {}).get("assignees")
+        
+        if isinstance(raw_assignees, list):
+            final_assignees = raw_assignees
+        elif isinstance(raw_assignees, str) and raw_assignees.strip():
+            # Защита от легаси-данных: если вдруг придет строка, делаем из неё список
+            final_assignees = [raw_assignees]
+        else:
+            final_assignees = None
+
         analytics = TaskAnalyticsModel(
             event_id=event.event_id,
             event_type=event.event_type,
@@ -38,7 +44,7 @@ class AnalyticsRepository:
             description=payload.get("description"),
             status=payload.get("status"),
             user_id=payload.get("user_id"),
-            assignee=payload.get("metadata", {}).get("assignee"),
+            assignees=final_assignees,
             priority=payload.get("metadata", {}).get("priority"),
             created_at=created_at,
             updated_at=updated_at,
