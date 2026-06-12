@@ -3,7 +3,7 @@
 from datetime import datetime
 from typing import Any
 from uuid import UUID
-
+from enum import Enum
 from pydantic import BaseModel, Field, field_validator
 
 
@@ -27,3 +27,22 @@ class TaskEventSchema(BaseModel):
                 except (ValueError, TypeError):
                     pass  # Keep as string if parsing fails
         return v
+    
+class TaskEventType(str, Enum):
+    """Типы событий задачи."""
+
+    CREATED = "created"
+    UPDATED = "updated"
+    DELETED = "deleted"
+    STATUS_CHANGED = "status_changed"
+    ASSIGNED = "assigned"
+    PRIORITY_ESCALATED = "priority_escalated" 
+
+class TaskStatus(str, Enum):
+    """Статусы задачи."""
+
+    TODO = "todo"
+    IN_PROGRESS = "in_progress"
+    DONE = "done"
+    CANCELLED = "cancelled"
+    PENDING = "pending"

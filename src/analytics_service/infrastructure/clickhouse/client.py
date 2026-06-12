@@ -37,7 +37,7 @@ class ClickHouseClient:
                 description String,
                 status String,
                 user_id Nullable(String),
-                assignee Nullable(String),
+                assignees Nullable(String),
                 priority Nullable(String),
                 created_at DateTime64(3),
                 updated_at DateTime64(3)

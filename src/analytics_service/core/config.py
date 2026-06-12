@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     ENV: str = "DEV"
     LOG_LEVEL: str = "INFO"
     PORT: int = 8002
+    DOCKER_ENV: bool = False 
 
     # PostgreSQL
     POSTGRES_HOST: str
