@@ -16,6 +16,7 @@ services:
       - KAFKA_CONSUMER_GROUP=analytics-service
       - LOG_LEVEL=INFO
       - PORT=8002
+      - DOCKER_ENV=true
     ports:
       - "8002:8002"
     networks:
